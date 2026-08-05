@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: lax360-backend
+    env: docker
+    plan: free
+    region: singapore
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: NOTIFY_EMAIL
+        value: lax360salem@gmail.com
+      - key: RESEND_FROM_EMAIL
+        value: "LAX360 Ventures <onboarding@resend.dev>"
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://lax360-ventures-frontend.vercel.app
+      - key: JWT_SECRET
+        generateValue: true
+      - key: LOG_LEVEL
+        value: INFO
