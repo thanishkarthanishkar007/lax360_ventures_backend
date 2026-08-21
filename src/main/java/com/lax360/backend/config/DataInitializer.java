@@ -82,6 +82,10 @@ public class DataInitializer implements CommandLineRunner {
             ));
         }
 
+        if (contentRepo.findByKey("admin_passcode").isEmpty()) {
+            contentRepo.save(new WebsiteContent("admin_passcode", "Admin Passcode", "lax360@1234"));
+        }
+
         if (contentRepo.count() == 0) {
             contentRepo.save(new WebsiteContent("hero_headline", "Hero Headline", "Transform Your Business with Smart Digital Solutions"));
             contentRepo.save(new WebsiteContent("hero_subhead", "Hero Subhead", "LAX360 Ventures builds SaaS products that help teams automate operations, understand customers, and grow revenue."));
