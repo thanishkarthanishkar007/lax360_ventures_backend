@@ -87,6 +87,10 @@ public class EmailService {
                 .atZone(ZoneOffset.UTC)
                 .format(DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm 'UTC'"));
 
+        String customRow = (req.getCustomRequirement() != null && !req.getCustomRequirement().isBlank())
+                ? row("Custom Requirement", req.getCustomRequirement())
+                : "";
+
         return "<div style=\"font-family:Arial,sans-serif;max-width:520px;margin:0 auto;\">"
                 + "<h2 style=\"color:#6D28D9;margin-bottom:16px;\">New Book-a-Demo Request</h2>"
                 + "<table style=\"width:100%;border-collapse:collapse;font-size:14px;\">"
@@ -95,6 +99,7 @@ public class EmailService {
                 + row("Mobile number", req.getMobileNumber())
                 + row("Company", req.getCompany())
                 + row("Interested in", req.getProduct())
+                + customRow
                 + row("Submitted at", submittedAt)
                 + "</table>"
                 + "<p style=\"margin-top:24px;color:#888;font-size:12px;\">"

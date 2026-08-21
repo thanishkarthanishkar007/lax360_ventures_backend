@@ -25,7 +25,8 @@ public class DemoRequestService {
                 dto.getEmail().trim(),
                 dto.getMobileNumber().trim(),
                 dto.getCompany().trim(),
-                dto.getProduct().trim()
+                dto.getProduct().trim(),
+                dto.getCustomRequirement() != null ? dto.getCustomRequirement().trim() : null
         );
 
         DemoRequest saved = repository.save(request);
@@ -35,5 +36,9 @@ public class DemoRequestService {
 
     public List<DemoRequest> getAllDemoRequests() {
         return repository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+    }
+
+    public void deleteDemoRequest(String id) {
+        repository.deleteById(id);
     }
 }

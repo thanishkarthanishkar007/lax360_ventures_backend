@@ -39,4 +39,10 @@ public class DemoRequestController {
     public List<DemoRequest> list() {
         return service.getAllDemoRequests();
     }
+
+    @org.springframework.web.bind.annotation.DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@org.springframework.web.bind.annotation.PathVariable String id) {
+        service.deleteDemoRequest(id);
+    }
 }

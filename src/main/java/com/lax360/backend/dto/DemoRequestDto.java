@@ -28,6 +28,9 @@ public class DemoRequestDto {
     @Size(max = 100)
     private String product;
 
+    @Size(max = 500)
+    private String customRequirement;
+
     public String getFullName() {
         return fullName;
     }
@@ -66,5 +69,13 @@ public class DemoRequestDto {
 
     public void setProduct(String product) {
         this.product = product;
+    }
+
+    public String getCustomRequirement() {
+        return customRequirement;
+    }
+
+    public void setCustomRequirement(String customRequirement) {
+        this.customRequirement = customRequirement;
     }
 }

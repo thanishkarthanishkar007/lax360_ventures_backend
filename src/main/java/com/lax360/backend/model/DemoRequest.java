@@ -16,17 +16,19 @@ public class DemoRequest {
     private String mobileNumber;
     private String company;
     private String product;
+    private String customRequirement;
     private Instant createdAt;
 
     public DemoRequest() {
     }
 
-    public DemoRequest(String fullName, String email, String mobileNumber, String company, String product) {
+    public DemoRequest(String fullName, String email, String mobileNumber, String company, String product, String customRequirement) {
         this.fullName = fullName;
         this.email = email;
         this.mobileNumber = mobileNumber;
         this.company = company;
         this.product = product;
+        this.customRequirement = customRequirement;
         this.createdAt = Instant.now();
     }
 
@@ -76,6 +78,14 @@ public class DemoRequest {
 
     public void setProduct(String product) {
         this.product = product;
+    }
+
+    public String getCustomRequirement() {
+        return customRequirement;
+    }
+
+    public void setCustomRequirement(String customRequirement) {
+        this.customRequirement = customRequirement;
     }
 
     public Instant getCreatedAt() {
