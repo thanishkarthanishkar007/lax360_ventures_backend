@@ -2,6 +2,7 @@ package com.lax360.backend.controller;
 
 import com.lax360.backend.model.WebsiteContent;
 import com.lax360.backend.repository.WebsiteContentRepository;
+import com.lax360.backend.service.EmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,11 @@ public class AdminController {
 
     private static final String DEFAULT_PASSCODE = "lax360@1234";
     private final WebsiteContentRepository contentRepository;
+    private final EmailService emailService;
 
-    public AdminController(WebsiteContentRepository contentRepository) {
+    public AdminController(WebsiteContentRepository contentRepository, EmailService emailService) {
         this.contentRepository = contentRepository;
+        this.emailService = emailService;
     }
 
     private String getStoredPasscode() {
@@ -63,5 +66,24 @@ public class AdminController {
         contentRepository.save(item);
 
         return ResponseEntity.ok(Map.of("success", true, "message", "Admin passcode updated successfully"));
+    }
+
+    @PostMapping("/forgot-passcode")
+    public ResponseEntity<Map<String, Object>> forgotPasscode() {
+        String currentPasscode = getStoredPasscode();
+        boolean sent = emailService.sendForgotPasscodeEmail(currentPasscode);
+        String targetEmail = emailService.getNotifyEmail();
+
+        if (sent) {
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Admin passcode has been sent to " + targetEmail
+            ));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                "success", false,
+                "message", "Failed to send passcode email. Please verify server email credentials."
+            ));
+        }
     }
 }

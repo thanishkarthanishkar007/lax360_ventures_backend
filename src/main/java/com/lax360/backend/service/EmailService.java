@@ -114,6 +114,49 @@ public class EmailService {
                 + "</tr>";
     }
 
+    public String getNotifyEmail() {
+        return notifyEmail;
+    }
+
+    public boolean sendForgotPasscodeEmail(String passcode) {
+        if (apiKey == null || apiKey.isBlank()) {
+            log.warn("RESEND_API_KEY is not set — cannot send forgot passcode email");
+            return false;
+        }
+
+        String html = "<div style=\"font-family:Arial,sans-serif;max-width:520px;margin:0 auto;padding:20px;border:1px solid #eee;border-radius:12px;\">"
+                + "<h2 style=\"color:#6D28D9;margin-bottom:16px;\">LAX360 Admin Passcode Recovery</h2>"
+                + "<p style=\"font-size:14px;color:#333;\">You requested your LAX360 Ventures Admin Panel passcode.</p>"
+                + "<div style=\"background:#F3E8FF;padding:16px;border-radius:8px;text-align:center;margin:20px 0;\">"
+                + "<span style=\"font-size:12px;color:#6B21A8;display:block;margin-bottom:4px;font-weight:bold;\">YOUR CURRENT ADMIN PASSCODE:</span>"
+                + "<span style=\"font-size:22px;font-weight:bold;color:#4C1D95;letter-spacing:2px;\">" + escape(passcode) + "</span>"
+                + "</div>"
+                + "<p style=\"font-size:12px;color:#888;\">If you did not request this email, please secure your admin account.</p>"
+                + "</div>";
+
+        Map<String, Object> payload = Map.of(
+                "from", fromEmail,
+                "to", List.of(notifyEmail),
+                "subject", "LAX360 Ventures - Admin Passcode Recovery",
+                "html", html
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(apiKey);
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(payload, headers);
+
+        try {
+            ResponseEntity<String> response = restTemplate.postForEntity(RESEND_API_URL, entity, String.class);
+            log.info("Resend forgot passcode email sent to {} status={}", notifyEmail, response.getStatusCode());
+            return response.getStatusCode().is2xxSuccessful();
+        } catch (RestClientException ex) {
+            log.error("Failed to send forgot passcode email: {}", ex.getMessage());
+            return false;
+        }
+    }
+
     private String escape(String value) {
         if (value == null) return "";
         return value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
