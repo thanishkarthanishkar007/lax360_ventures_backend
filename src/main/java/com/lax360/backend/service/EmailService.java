@@ -115,10 +115,11 @@ public class EmailService {
     }
 
     public String getNotifyEmail() {
-        return notifyEmail;
+        return (notifyEmail != null && !notifyEmail.isBlank()) ? notifyEmail.trim() : "lax360pr.ltd@gmail.com";
     }
 
     public boolean sendForgotPasscodeEmail(String passcode) {
+        String recipient = getNotifyEmail();
         if (apiKey == null || apiKey.isBlank()) {
             log.warn("RESEND_API_KEY is not set — cannot send forgot passcode email");
             return false;
@@ -136,7 +137,7 @@ public class EmailService {
 
         Map<String, Object> payload = Map.of(
                 "from", fromEmail,
-                "to", List.of(notifyEmail),
+                "to", List.of(recipient),
                 "subject", "LAX360 Ventures - Admin Passcode Recovery",
                 "html", html
         );
@@ -149,10 +150,10 @@ public class EmailService {
 
         try {
             ResponseEntity<String> response = restTemplate.postForEntity(RESEND_API_URL, entity, String.class);
-            log.info("Resend forgot passcode email sent to {} status={}", notifyEmail, response.getStatusCode());
+            log.info("Resend forgot passcode email sent to {} status={}", recipient, response.getStatusCode());
             return response.getStatusCode().is2xxSuccessful();
         } catch (RestClientException ex) {
-            log.error("Failed to send forgot passcode email: {}", ex.getMessage());
+            log.error("Failed to send forgot passcode email to {}: {}", recipient, ex.getMessage());
             return false;
         }
     }
