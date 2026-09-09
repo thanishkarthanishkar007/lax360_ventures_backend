@@ -33,10 +33,10 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) {
         if (productRepo.count() == 0) {
             productRepo.saveAll(List.of(
-                new Product("CRM", "Customer Relationship", "A CRM built for fast-moving sales teams — pipeline, outreach, and forecasting in one view.", List.of("Deal pipeline automation", "Built-in email sequencing", "Forecast accuracy scoring")),
-                new Product("ERP", "Enterprise Resource Planning", "Unify finance, inventory, procurement, and HR operations on one connected backbone.", List.of("Multi-department workflows", "Real-time financial reporting", "Role-based access control")),
-                new Product("Hospital Management", "Healthcare", "End-to-end hospital operations — patient records, admissions, billing, and staff scheduling.", List.of("Electronic health records", "Bed & ward management", "Insurance & billing workflows")),
-                new Product("Clinic Management", "Healthcare", "Appointment booking, patient history, and billing built for clinics and small practices.", List.of("Online appointment booking", "Digital patient records", "Automated billing & reminders"))
+                new Product("Restaurants – 3D Animated Web", "3D Animated Web", "Haute cuisine indienne & royal dining with interactive 3D elements and reservations.", List.of("Interactive 3D table reservations", "Dynamic culinary menu showcase", "Chef storytelling & ambient audio")),
+                new Product("Jewellery – Animated Web", "Animated Web", "Haute joaillerie and luxury gemstone showcase with real-time reflections and cinematic transitions.", List.of("High-precision gem showcases", "Bespoke consultation booking", "Cinematic jewelry catalog")),
+                new Product("Gym – Cursor Interactive Web", "Cursor Interactive Web", "Premium athletic club experience with cursor physics, membership tiers, and trainer schedules.", List.of("Interactive cursor reactive canvas", "Class schedule & live bookings", "Elite trainer profile cards")),
+                new Product("Textiles – Scrolling Web", "Scrolling Web", "Haute weaves, silks, and bespoke couture fabric gallery with smooth scroll animations.", List.of("Bespoke fabric visualizer", "Artisan weaver stories", "Silk sample order pipeline"))
             ));
         }
 
