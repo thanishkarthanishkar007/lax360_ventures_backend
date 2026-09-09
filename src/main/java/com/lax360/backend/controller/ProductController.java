@@ -38,6 +38,10 @@ public class ProductController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
         existing.setName(product.getName());
         existing.setTag(product.getTag());
+        existing.setSlug(product.getSlug());
+        existing.setLiveUrl(product.getLiveUrl());
+        existing.setImageUrl(product.getImageUrl());
+        existing.setIndex(product.getIndex());
         existing.setDescription(product.getDescription());
         existing.setPoints(product.getPoints());
         return repository.save(existing);

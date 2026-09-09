@@ -31,12 +31,19 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (productRepo.count() == 0) {
+        List<Product> existingProducts = productRepo.findAll();
+        boolean hasOldProducts = existingProducts.stream()
+                .anyMatch(p -> List.of("CRM", "ERP", "Hospital Management", "Clinic Management").contains(p.getName()));
+
+        if (existingProducts.isEmpty() || hasOldProducts) {
+            if (hasOldProducts) {
+                productRepo.deleteAll();
+            }
             productRepo.saveAll(List.of(
-                new Product("Restaurants – 3D Animated Web", "3D Animated Web", "Haute cuisine indienne & royal dining with interactive 3D elements and reservations.", List.of("Interactive 3D table reservations", "Dynamic culinary menu showcase", "Chef storytelling & ambient audio")),
-                new Product("Jewellery – Animated Web", "Animated Web", "Haute joaillerie and luxury gemstone showcase with real-time reflections and cinematic transitions.", List.of("High-precision gem showcases", "Bespoke consultation booking", "Cinematic jewelry catalog")),
-                new Product("Gym – Cursor Interactive Web", "Cursor Interactive Web", "Premium athletic club experience with cursor physics, membership tiers, and trainer schedules.", List.of("Interactive cursor reactive canvas", "Class schedule & live bookings", "Elite trainer profile cards")),
-                new Product("Textiles – Scrolling Web", "Scrolling Web", "Haute weaves, silks, and bespoke couture fabric gallery with smooth scroll animations.", List.of("Bespoke fabric visualizer", "Artisan weaver stories", "Silk sample order pipeline"))
+                new Product("Restaurants – 3D Animated Web", "3D Animated Web", "food-hotel-demo-web.vercel.app", "https://food-hotel-demo-web.vercel.app/?utm_source=chatgpt.com", "/images/preview-restaurant.png", "#1", "Haute cuisine indienne & royal dining with interactive 3D table reservations and dynamic culinary menu.", List.of("Interactive 3D table reservations", "Dynamic culinary menu showcase", "Chef storytelling & ambient audio")),
+                new Product("Jewellery – Animated Web", "Animated Web", "jewellery-web-demo-five.vercel.app", "https://jewellery-web-demo-five.vercel.app/?utm_source=chatgpt.com", "/images/preview-jewellery.png", "#2", "Haute joaillerie and luxury gemstone showcase with real-time reflections and cinematic transitions.", List.of("High-precision gem showcases", "Bespoke consultation booking", "Cinematic jewelry catalog")),
+                new Product("Gym – Cursor Interactive Web", "Cursor Interactive Web", "gym-web-nine-phi.vercel.app", "https://gym-web-nine-phi.vercel.app/?utm_source=chatgpt.com", "/images/preview-gym.png", "#3", "Premium athletic club experience with cursor physics, membership tiers, and trainer schedules.", List.of("Interactive cursor reactive canvas", "Class schedule & live bookings", "Elite trainer profile cards")),
+                new Product("Textiles – Scrolling Web", "Scrolling Web", "textiles-web.vercel.app", "https://textiles-web.vercel.app/?utm_source=chatgpt.com", "/images/preview-textiles.png", "#4", "Haute weaves, silks, and bespoke couture fabric gallery with smooth scroll animations.", List.of("Bespoke fabric visualizer", "Artisan weaver stories", "Silk sample order pipeline"))
             ));
         }
 
